@@ -1,0 +1,23 @@
+.profile__alias {
+  max-height: 50px;
+  font-size: 42px;
+  line-height: 48px;
+  font-weight: 500;
+  margin: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+@media screen and (max-width: 1023px) {
+  .profile__alias {
+    text-align: center;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .profile__alias {
+    font-size: 27px;
+    line-height: 33px;
+  }
+}

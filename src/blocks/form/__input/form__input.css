@@ -1,0 +1,20 @@
+.form__input {
+  width: 100%;
+  font-size: 14px;
+  line-height: 17px;
+  font-weight: 400;
+  margin: 30px 0 0 0;
+  padding: 0;
+  border: 0;
+  box-sizing: border-box;
+  padding-bottom: 13px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  display: block;
+}
+
+.form__input:first-of-type {
+  margin: 0;
+}

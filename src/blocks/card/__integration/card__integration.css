@@ -1,0 +1,5 @@
+.card__integration {
+  display: flex;
+  justify-content: space-between;
+  padding: 22px 0 22px 21px;
+}
