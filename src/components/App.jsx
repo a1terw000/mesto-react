@@ -2,7 +2,7 @@ import Header from "./Header/Header.jsx";
 import Main from "./Main/Main.jsx";
 import Footer from "./Footer/Footer.jsx";
 import PopupWithForm from "./PopupWithForm/PopupWithForm.jsx";
-import PopupImage from "./PopupImage/PopupImage.jsx";
+import PopupImage from "./ImagePopup/PopupImage.jsx";
 import {useState} from "react";
 
 function App() {
