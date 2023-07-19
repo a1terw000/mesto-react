@@ -5,10 +5,10 @@ class Api {
     this._authorization = options.headers.authorization;
   }
 
-  _checkResponse(res) {return res.ok ? res.json() : Promise.reject }
+  _checkResponse(res) { return res.ok ? res.json() : Promise.reject }
 
   getUserInfo() {
-    return fetch(`${this._url}/users/me`,{
+    return fetch(`${this._url}/users/me`, {
       headers: {
         authorization: this._authorization
       }
@@ -17,7 +17,7 @@ class Api {
   }
 
   getInitialCards() {
-    return fetch(`${this._url}/cards`,{
+    return fetch(`${this._url}/cards`, {
       headers: {
         authorization: this._authorization
       }
@@ -97,6 +97,6 @@ const api = new Api({
     authorization: '393bdb26-0a49-44b5-92b2-a59ca9dd3b0e',
     'Content-Type': 'application/json'
   }
-}); 
+});
 
 export default api;
