@@ -69,7 +69,6 @@ function App() {
     setEventListenerOnDocument()
   }
 
-
   useEffect(() => {
     Promise.all([api.getUserInfo(), api.getInitialCards()])
       .then(([userData, cardData]) => {
@@ -88,9 +87,7 @@ function App() {
 
   function handleDeleteClick(evt) {
     evt.preventDefault()
-
     setIsSend(true)
-
     api.deleteCard(deleteCardId)
       .then(() => {
         setCards(cards.filter(card => {
@@ -99,11 +96,15 @@ function App() {
         closeAllPopups()
         setIsSend(false)
       })
+      .catch((error) => {
+        console.error(`Ошибка при удалении карточки: ${error}`)
+        setIsSend(false)
+      })
+      .finally()
   }
 
   function handleUpdateUser(dataUser, reset) {
     setIsSend(true)
-
     api.setUserInfo(dataUser)
       .then((res) => {
         setCurrentUser(res)
@@ -111,11 +112,15 @@ function App() {
         reset()
         setIsSend(false)
       })
+      .catch((error) => {
+        console.error(`Ошибка обновления данных профиля: ${error}`)
+        setIsSend(false)
+      })
+      .finally()
   }
 
   function handleUpdateAvatar(dataUser, reset) {
     setIsSend(true)
-
     api.setAvatar(dataUser)
       .then(res => {
         setCurrentUser(res)
@@ -123,11 +128,15 @@ function App() {
         reset()
         setIsSend(false)
       })
+      .catch((error) => {
+        console.error(`Ошибка при обновлении аватарки: ${error}`)
+        setIsSend(false)
+      })
+      .finally()
   }
 
   function handleAddPlaceSubmit(dataCard, reset) {
     setIsSend(true)
-
     api.addCard(dataCard)
       .then(res => {
         setCards([res, ...cards])
@@ -135,6 +144,12 @@ function App() {
         reset()
         setIsSend(false)
       })
+      .catch((error) => {
+        console.error(`Ошибка создания новой карточки: ${error}`)
+        setIsSend(false)
+      })
+      .finally()
+
   }
 
   return (

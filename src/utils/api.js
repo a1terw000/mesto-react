@@ -35,6 +35,7 @@ class Api {
       })
     })
       .then(this._checkResponse)
+      .catch()
   }
 
   setAvatar(userData) {
