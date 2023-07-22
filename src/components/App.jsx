@@ -94,13 +94,11 @@ function App() {
           return card._id !== deleteCardId
         }))
         closeAllPopups()
-        setIsSend(false)
       })
       .catch((error) => {
         console.error(`Ошибка при удалении карточки: ${error}`)
-        setIsSend(false)
       })
-      .finally()
+      .finally(setIsSend(false))
   }
 
   function handleUpdateUser(dataUser, reset) {
@@ -110,13 +108,11 @@ function App() {
         setCurrentUser(res)
         closeAllPopups()
         reset()
-        setIsSend(false)
       })
       .catch((error) => {
         console.error(`Ошибка обновления данных профиля: ${error}`)
-        setIsSend(false)
       })
-      .finally()
+      .finally(setIsSend(false))
   }
 
   function handleUpdateAvatar(dataUser, reset) {
@@ -126,13 +122,11 @@ function App() {
         setCurrentUser(res)
         closeAllPopups()
         reset()
-        setIsSend(false)
       })
       .catch((error) => {
         console.error(`Ошибка при обновлении аватарки: ${error}`)
-        setIsSend(false)
       })
-      .finally()
+      .finally(setIsSend(false))
   }
 
   function handleAddPlaceSubmit(dataCard, reset) {
@@ -142,13 +136,11 @@ function App() {
         setCards([res, ...cards])
         closeAllPopups()
         reset()
-        setIsSend(false)
       })
       .catch((error) => {
         console.error(`Ошибка создания новой карточки: ${error}`)
-        setIsSend(false)
       })
-      .finally()
+      .finally(setIsSend(false))
 
   }
 
