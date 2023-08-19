@@ -3,12 +3,17 @@ import Main from "./Main/Main.jsx";
 import Footer from "./Footer/Footer.jsx";
 import PopupWithForm from "./PopupWithForm/PopupWithForm.jsx";
 import PopupImage from "./ImagePopup/ImagePopup.jsx";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState} from "react";
 import CurrentUserContext from "../contexts/CurrentUserContext.js"
-import api from "../utils/api.js"
+import api from "../utils/api.js" 
+import * as AuthApi from "../utils/AuthApi.js"
 import EditProfilePopup from "../components/EditProfilePopup/EditProfilePopup.jsx"
 import EditAvatarPopup from "./EditAvatarPopup/EditAvatarPopup.jsx";
 import AddPlacePopup from "./AddPlacePopup/AddPlacePopup.jsx";
+import ProtectedRoute from "./ProtectedRoute/ProtectedRoute.jsx";
+import { Route, Routes, Navigate } from 'react-router-dom';
+import Register from "./Register/Register.jsx";
+import Login from "./Login/Login.jsx";
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false)
@@ -23,6 +28,70 @@ function App() {
 
   const [cards, setCards] = useState([])
   const [isSend, setIsSend] = useState(false)
+
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [isLoading, setIsLoading] = useState(false)
+  const [isInfoTooltipSuccess, setIsInfoTooltipSuccess] = useState(false);
+  const [isInfoTooltipPopup, setIsInfoTooltipPopup] = useState(false);
+  const [headerEmail, setHeaderEmail] = useState("");
+
+  function handleRegister(data) {
+    AuthApi()
+      .register(data)
+      .then((res) => {
+        if (res && res.data) {
+          setIsInfoTooltipSuccess(true);
+          Navigate("/sign-in");
+        }
+      })
+      .catch((err) => {
+        setIsInfoTooltipSuccess(false);
+        console.log(err);
+      })
+      .finally(() => setIsInfoTooltipPopup(true));
+  }
+
+  function handleLogin(data) {
+    AuthApi()
+      .login(data)
+      .then((res) => {
+        if (res && res.token) {
+          localStorage.setItem("jwt", res.token);
+          Navigate("/");
+          setHeaderEmail(data.email);
+          setLoggedIn(true);
+        }
+      })
+      .catch((err) => {
+        setIsInfoTooltipSuccess(false);
+        setIsInfoTooltipPopup(true);
+        console.error(err);
+      });
+  }
+
+  function checkToken() {
+    const token = localStorage.getItem("jwt");
+    if (token) {
+      AuthApi()
+        .checkToken(token)
+        .then((res) => {
+          if (res && res.data) {
+            setLoggedIn(true);
+            Navigate("/");
+            setHeaderEmail(res.data.email);
+          }
+        })
+        .catch((err) => console.error(err));
+    } else {
+      setLoggedIn(false);
+    }
+  }
+  
+  function logOut() {
+    setLoggedIn(false);
+    localStorage.removeItem("jwt");
+    setHeaderEmail("");
+  }
 
   function handleEditProfileClick() {
     setIsEditProfilePopupOpen(true)
@@ -147,17 +216,36 @@ function App() {
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
-        <Header />
-        <Main
+        <Header loggedIn={loggedIn} email={headerEmail} logOut={logOut} />
+
+          <Routes>
+            <Route path='/' element={
+              <ProtectedRoute
+                element={<Main/>} 
+                onEditProfile={handleEditProfileClick}
+                onAddPlace={handleAddPlaceClick}
+                onEditAvatar={handleEditAvatarClick}
+                onCardClick={handleCardClick}
+                onCardDelete={handleCardDelete}
+                cards={cards}
+                loggedIn={loggedIn}
+              />
+            } />
+            <Route path='/sign-up' element={<Register onRegister={handleRegister} />}/>
+            <Route path='/sign-in' element={<Login onLogin={handleLogin} />}/>
+            <Route path='*' element={<Navigate to='/' replace />} />
+          </Routes>
+
+        {/* <Main
           onEditProfile={handleEditProfileClick}
           onAddPlace={handleAddPlaceClick}
           onEditAvatar={handleEditAvatarClick}
           onCardClick={handleCardClick}
           onCardDelete={handleCardDelete}
           cards={cards}
-        />
-        <Footer />
+        /> */}
 
+        <Footer />
 
         <EditProfilePopup
           isOpen={isEditProfilePopupOpen}
@@ -198,8 +286,6 @@ function App() {
           isOpen={imagePopupVisibility}
           onClose={closeAllPopups}
         />
-
-
       </div>
     </CurrentUserContext.Provider>
   );
