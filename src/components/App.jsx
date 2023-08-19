@@ -98,7 +98,7 @@ function App() {
       .catch((error) => {
         console.error(`Ошибка при удалении карточки: ${error}`)
       })
-      .finally(setIsSend(false))
+      .finally(() => setIsSend(false))
   }
 
   function handleUpdateUser(dataUser, reset) {
@@ -112,7 +112,7 @@ function App() {
       .catch((error) => {
         console.error(`Ошибка обновления данных профиля: ${error}`)
       })
-      .finally(setIsSend(false))
+      .finally(() => setIsSend(false))
   }
 
   function handleUpdateAvatar(dataUser, reset) {
@@ -126,7 +126,7 @@ function App() {
       .catch((error) => {
         console.error(`Ошибка при обновлении аватарки: ${error}`)
       })
-      .finally(setIsSend(false))
+      .finally(() => setIsSend(false))
   }
 
   function handleAddPlaceSubmit(dataCard, reset) {
@@ -140,7 +140,7 @@ function App() {
       .catch((error) => {
         console.error(`Ошибка создания новой карточки: ${error}`)
       })
-      .finally(setIsSend(false))
+      .finally(() => setIsSend(false))
 
   }
 
